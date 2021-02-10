@@ -20,9 +20,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/xor-gate/ar"
 
-	"github.com/lebauce/igor/cmd"
-	"github.com/lebauce/igor/tarball"
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/tarball"
+	"github.com/ISauve/igor/types"
 )
 
 var aptConfigDir string
@@ -220,8 +219,4 @@ func NewBackend(target *types.Target) (*Backend, error) {
 	}
 
 	return backend, nil
-}
-
-func init() {
-	cmd.RootCmd.PersistentFlags().StringVarP(&aptConfigDir, "apt-config-dir", "", "/etc/apt", "APT configuration dir")
 }

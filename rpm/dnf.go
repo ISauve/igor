@@ -16,7 +16,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"unsafe"
 
 	"github.com/pkg/errors"
@@ -25,8 +24,7 @@ import (
 	"github.com/vbauerster/mpb/v5"
 	"github.com/vbauerster/mpb/v5/decor"
 
-	"github.com/lebauce/igor/cmd"
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/types"
 )
 
 var (
@@ -297,12 +295,4 @@ func NewDnfBackend(release string) (*DnfBackend, error) {
 	C.dnf_context_set_write_history(backend.dnfContext, 0)
 
 	return backend, nil
-}
-
-func init() {
-	defaultReposDir := "/etc/yum.repos.d"
-	if strings.HasPrefix(cmd.Target.Distro.Display, "openSUSE") || strings.HasPrefix(cmd.Target.Distro.Display, "SLE") {
-		defaultReposDir = "/etc/zypp/repos.d"
-	}
-	cmd.RootCmd.PersistentFlags().StringVarP(&reposDir, "yum-repos-dir", "", defaultReposDir, "YUM configuration dir")
 }
