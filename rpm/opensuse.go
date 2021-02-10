@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/types"
 )
 
 type OpenSUSEBackend struct {
@@ -49,7 +49,7 @@ func (b *OpenSUSEBackend) GetKernelHeaders(directory string) error {
 }
 
 func NewOpenSUSEBackend(target *types.Target) (types.Backend, error) {
-	dnfBackend, err := NewDnfBackend(target.Distro.Release)
+	dnfBackend, err := NewDnfBackend(target.Distro.Display, target.Distro.Release)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create DNF backend")
 	}

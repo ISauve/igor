@@ -4,7 +4,7 @@ centos-builder:
 
 .PHONY: igor-centos8
 igor-centos8:
-	docker run --rm -ti -v `pwd`:/go/src/github.com/lebauce/igor igor-centos8-builder go build -o igor-centos8
+	docker run --rm -ti -v `pwd`:/go/src/github.com/ISauve/igor igor-centos8-builder go build -o igor-centos8
 
 .PHONY: igor-dnf
 igor-dnf:

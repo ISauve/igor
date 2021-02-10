@@ -1,4 +1,4 @@
-module github.com/lebauce/igor
+module github.com/ISauve/igor
 
 go 1.14
 
