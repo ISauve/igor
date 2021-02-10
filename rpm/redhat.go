@@ -5,7 +5,7 @@ package rpm
 import (
 	"github.com/pkg/errors"
 
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/types"
 )
 
 type RedHatBackend struct {
@@ -23,7 +23,7 @@ func (b *RedHatBackend) Close() {
 }
 
 func NewRedHatBackend(target *types.Target) (*RedHatBackend, error) {
-	dnfBackend, err := NewDnfBackend(target.Distro.Release)
+	dnfBackend, err := NewDnfBackend(target.Distro.Display, target.Distro.Release)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create DNF backend")
 	}

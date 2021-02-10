@@ -25,14 +25,10 @@ import (
 	"github.com/vbauerster/mpb/v5"
 	"github.com/vbauerster/mpb/v5/decor"
 
-	"github.com/lebauce/igor/cmd"
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/types"
 )
 
-var (
-	bar      *mpb.Bar
-	reposDir string
-)
+var bar *mpb.Bar
 
 func wrapGError(err *C.struct__GError, format string, a ...interface{}) error {
 	if err == nil {
@@ -249,7 +245,7 @@ func (b *DnfBackend) EnableRepository(repo *Repository) error {
 	return wrapGError(gerr, "failed to enable repository '%s'", repo.id)
 }
 
-func NewDnfBackend(release string) (*DnfBackend, error) {
+func NewDnfBackend(distro, release string) (*DnfBackend, error) {
 	backend := &DnfBackend{
 		dnfContext: C.dnf_context_new(),
 	}
@@ -259,6 +255,11 @@ func NewDnfBackend(release string) (*DnfBackend, error) {
 	tmpDir := "/tmp"
 	cacheDir := "/tmp/igor-cache"
 	solvDir := "/tmp/igor-solv"
+
+	reposDir := "/etc/yum.repos.d"
+	if strings.HasPrefix(distro, "openSUSE") || strings.HasPrefix(distro), "SLE") {
+		reposDir = "/etc/zypp/repos.d"
+	}
 
 	tmpDirC := C.CString(tmpDir)
 	defer C.free(unsafe.Pointer(tmpDirC))
@@ -297,12 +298,4 @@ func NewDnfBackend(release string) (*DnfBackend, error) {
 	C.dnf_context_set_write_history(backend.dnfContext, 0)
 
 	return backend, nil
-}
-
-func init() {
-	defaultReposDir := "/etc/yum.repos.d"
-	if strings.HasPrefix(cmd.Target.Distro.Display, "openSUSE") || strings.HasPrefix(cmd.Target.Distro.Display, "SLE") {
-		defaultReposDir = "/etc/zypp/repos.d"
-	}
-	cmd.RootCmd.PersistentFlags().StringVarP(&reposDir, "yum-repos-dir", "", defaultReposDir, "YUM configuration dir")
 }

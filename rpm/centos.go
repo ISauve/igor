@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/lebauce/igor/types"
+	"github.com/ISauve/igor/types"
 )
 
 type CentOSBackend struct {
@@ -92,7 +92,7 @@ func NewCentOSBackend(target *types.Target) (*CentOSBackend, error) {
 	}
 
 	version, _ := strconv.Atoi(strings.SplitN(release, ".", 2)[0])
-	dnfBackend, err := NewDnfBackend(fmt.Sprintf("%d", version))
+	dnfBackend, err := NewDnfBackend(target.Distro.Display, fmt.Sprintf("%d", version))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create DNF backend")
 	}

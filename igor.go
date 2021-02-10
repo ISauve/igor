@@ -1,61 +1,53 @@
-package main
+package igor
 
 import (
+	"fmt"
 	"os"
 
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-
-	"github.com/lebauce/igor/apt"
-	"github.com/lebauce/igor/cmd"
-	"github.com/lebauce/igor/cos"
-	"github.com/lebauce/igor/rpm"
-	"github.com/lebauce/igor/types"
-	"github.com/lebauce/igor/wsl"
+	"github.com/ISauve/igor/apt"
+	"github.com/ISauve/igor/cos"
+	"github.com/ISauve/igor/types"
+	"github.com/ISauve/igor/wsl"
 )
 
-func main() {
-	cmd.DownloadCmd.Run = func(c *cobra.Command, args []string) {
-		target := cmd.Target
-		log.Infof("Distribution: %s\n", target.Distro.Display)
-		log.Infof("Release: %s\n", target.Distro.Release)
-		log.Infof("Kernel: %s\n", target.Uname.Kernel)
-		log.Debugf("OSRelease: %s\n", target.OSRelease)
-
-		var (
-			backend types.Backend
-			err     error
-		)
-
-		switch target.Distro.Display {
-		case "Fedora", "RHEL":
-			backend, err = rpm.NewRedHatBackend(&target)
-		case "CentOS":
-			backend, err = rpm.NewCentOSBackend(&target)
-		case "openSUSE":
-			backend, err = rpm.NewOpenSUSEBackend(&target)
-		case "SLE":
-			backend, err = rpm.NewSLESBackend(&target)
-		case "Debian", "Ubuntu":
-			backend, err = apt.NewBackend(&target)
-		case "cos":
-			backend, err = cos.NewBackend(&target)
-		case "wsl":
-			backend, err = wsl.NewBackend(&target)
-		default:
-			log.Fatalf("Unsupported distribution '%s'", target.Distro.Display)
-		}
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		os.MkdirAll(cmd.OutputDir, 0755)
-
-		if err = backend.GetKernelHeaders(cmd.OutputDir); err != nil {
-			log.Fatalf("failed to download kernel headers: %s", err)
-		}
+func GetTarget() (types.Target, error) {
+	target, err := types.NewTarget()
+	if err != nil {
+		return types.Target{}, err
 	}
 
-	cmd.RootCmd.Execute()
+	if _, err := os.Stat("/run/WSL"); err == nil {
+		target.Distro.Display = "wsl"
+	} else if id := target.OSRelease["ID"]; target.Distro.Display == "" && id != "" {
+		target.Distro.Display = id
+	}
+
+	return target, nil
+}
+
+func GetBackend(target types.Target) (types.Backend, error) {
+	var (
+		backend types.Backend
+		err     error
+	)
+
+	switch target.Distro.Display {
+	// case "Fedora", "RHEL":
+	// 	backend, err = rpm.NewRedHatBackend(&target)
+	// case "CentOS":
+	// 	backend, err = rpm.NewCentOSBackend(&target)
+	// case "openSUSE":
+	// 	backend, err = rpm.NewOpenSUSEBackend(&target)
+	// case "SLE":
+	// 	backend, err = rpm.NewSLESBackend(&target)
+	case "Debian", "Ubuntu":
+		backend, err = apt.NewBackend(&target)
+	case "cos":
+		backend, err = cos.NewBackend(&target)
+	case "wsl":
+		backend, err = wsl.NewBackend(&target)
+	default:
+		err = fmt.Errorf("Unsupported distribution '%s'", target.Distro.Display)
+	}
+	return backend, err
 }
