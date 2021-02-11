@@ -5,7 +5,7 @@ package rpm
 import (
 	"errors"
 
-	"github.com/DataDog/nikos/types"
+	"github.com/ISauve/nikos/types"
 )
 
 func NewBackend(target *types.Target) (types.Backend, error) {

@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/DataDog/nikos/types"
+	"github.com/ISauve/nikos/types"
 )
 
 type CentOSBackend struct {

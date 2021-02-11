@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"cloud.google.com/go/storage"
-	"github.com/DataDog/nikos/tarball"
-	"github.com/DataDog/nikos/types"
+	"github.com/ISauve/nikos/tarball"
+	"github.com/ISauve/nikos/types"
 	"github.com/pkg/errors"
 	"google.golang.org/api/option"
 )

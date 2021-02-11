@@ -16,7 +16,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"unsafe"
 
 	"github.com/pkg/errors"
@@ -25,7 +24,7 @@ import (
 	"github.com/vbauerster/mpb/v5"
 	"github.com/vbauerster/mpb/v5/decor"
 
-	"github.com/DataDog/nikos/types"
+	"github.com/ISauve/nikos/types"
 )
 
 var (
