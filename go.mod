@@ -1,10 +1,11 @@
-module github.com/DataDog/nikos
+module github.com/ISauve/nikos
 
 go 1.14
 
 require (
 	cloud.google.com/go/storage v1.12.0
 	github.com/AlekSi/pointer v1.1.0 // indirect
+	github.com/DataDog/nikos v0.0.0-20210210153909-2124cbdc4b2e
 	github.com/DisposaBoy/JsonConfigReader v0.0.0-20171218180944-5ea4d0ddac55 // indirect
 	github.com/aptly-dev/aptly v1.4.0
 	github.com/arduino/go-apt-client v0.0.0-20190812130613-5613f843fdc8
@@ -33,3 +34,5 @@ require (
 replace github.com/aptly-dev/aptly => github.com/lebauce/aptly v0.7.2-0.20201005164315-09522984a976
 
 replace github.com/wille/osutil => github.com/lebauce/osutil v0.0.0-20201027170515-5409e8e42a87
+
+replace github.com/DataDog/nikos => github.com/ISauve/nikos v0.0.0-20210211065154-5b93aa58747e
