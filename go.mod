@@ -1,4 +1,4 @@
-module github.com/DataDog/nikos
+module github.com/ISauve/nikos
 
 go 1.14
 
